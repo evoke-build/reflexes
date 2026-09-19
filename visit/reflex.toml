@@ -14,17 +14,17 @@ run     = "visit.mts"
 ask   = "Which site?"
 vocab = "sites"
 
-[args.private]
+[args.incognito]
 ask  = "In a private window?"
 flag = true
 
 [examples]
 "open github"                        = {}
-"go to the docs in a private window" = { private = true }
+"go to the docs in a private window" = { incognito = true }
 "take me to my mail"                 = {}
 
 [tests]
-"visit the bank site incognito" = { private = true }
+"visit the bank site incognito" = { incognito = true }
 "pull up the calendar"          = {}
 "open my downloads folder"      = false
 "search the web for laptops"    = false
