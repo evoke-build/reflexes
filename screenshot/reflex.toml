@@ -12,7 +12,7 @@ run     = "screenshot.mts"
 
 [args.area]
 ask               = "The whole screen, a window, or a selection?"
-options.screen    = "Everything on every display."
+options.screen    = "The whole screen."
 options.window    = "One window, chosen by clicking it."
 options.selection = "A rectangle you drag out."
 optional          = true
