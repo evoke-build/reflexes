@@ -1,21 +1,42 @@
-# Reflexes
+# evoke-build/reflexes
 
-The first-party collection: one directory per reflex, `reflex.toml` plus the file `run` names
-([design](../docs/design.md#reflex)). Until [step 12](../docs/roadmap.md#12-reflexes) writes the bodies, these are seed
-manifests: the eval spike's material and the spec's fixtures. Where `run` is an argv, it is macOS's.
+The first-party reflexes for [evoke](https://github.com/evoke-build/evoke): what a Mac does at a word. One
+directory per reflex — `reflex.toml`, and the file it runs where it runs one — nothing to build, nothing to install
+but `evoke` itself.
 
-| Reflex                             | Effect      | Run  | Exercises                                    | Near  |
-| :--------------------------------- | :---------- | :--- | :------------------------------------------- | :---- |
-| [timer](timer/reflex.toml)         | write       | file | `duration`; optional `quoted`                | awake |
-| [awake](awake/reflex.toml)         | write       | file | optional `duration`; unstated asserted       | timer |
-| [volume](volume/reflex.toml)       | write       | file | `number` with `range`                        |       |
-| [wifi](wifi/reflex.toml)           | write       | argv | `options` into argv                          |       |
-| [lock](lock/reflex.toml)           | write       | file | no arguments                                 | power |
-| [power](power/reflex.toml)         | destructive | file | `options`; effect stated                     | lock  |
-| [screenshot](screenshot/reflex.toml) | write     | file | optional `options`; `flag`                   |       |
-| [note](note/reflex.toml)           | write       | file | `quoted`; `[config]`                         |       |
-| [open](open/reflex.toml)           | read        | argv | `vocab` into argv                            | visit |
-| [visit](visit/reflex.toml)         | read        | file | `vocab`; `flag`                              | open  |
-| [download](download/reflex.toml)   | write       | file | `url`; optional `vocab`, shared with `open`  |       |
-| [mail](mail/reflex.toml)           | read        | file | `email`; optional `quoted`                   |       |
-| [trash](trash/reflex.toml)         | destructive | argv | no arguments; effect absent                  |       |
+```bash
+evoke add evoke-build/reflexes
+```
+
+| Reflex                               | Does                                                          | Effect      | Yours to set     |
+| :----------------------------------- | :------------------------------------------------------------ | :---------- | :--------------- |
+| [awake](awake/reflex.toml)           | Keeps the laptop awake for a duration, or until `pkill caffeinate` | write  |                  |
+| [download](download/reflex.toml)     | Saves a URL's file to `~/Downloads`, or to a place you name   | write       | `places`         |
+| [lock](lock/reflex.toml)             | Locks the screen                                              | write       |                  |
+| [mail](mail/reflex.toml)             | Starts an email in your mail app                              | read        |                  |
+| [note](note/reflex.toml)             | Appends a dated line to your notes file                       | write       | `file`           |
+| [open](open/reflex.toml)             | Opens one of your folders                                     | read        | `places`         |
+| [power](power/reflex.toml)           | Sleeps, restarts or shuts down                                | destructive |                  |
+| [screenshot](screenshot/reflex.toml) | Captures the screen, a window or a selection                  | write       |                  |
+| [timer](timer/reflex.toml)           | Counts down, then rings                                       | write       |                  |
+| [trash](trash/reflex.toml)           | Empties the trash                                             | destructive |                  |
+| [visit](visit/reflex.toml)           | Opens one of your sites, in a private window on request       | read        | `sites`          |
+| [volume](volume/reflex.toml)         | Sets the output volume                                        | write       |                  |
+| [wifi](wifi/reflex.toml)             | Turns Wi-Fi on or off                                         | write       |                  |
+
+## Yours to set
+
+A reflex that reads your words or a setting stays inactive until it has them, and `evoke` says which line does it.
+`places` names your folders, each word's value its full path; `sites` your sites, each value its URL.
+
+```bash
+evoke vocab places add desktop "The desktop." --value /Users/you/Desktop
+evoke vocab sites add github "GitHub." --value https://github.com
+evoke config note file ~/notes.txt
+```
+
+## Writing one
+
+`evoke new <name>` scaffolds a reflex; `evoke check` reads the manifest, loads the body and writes `reflex.d.ts`,
+the one file a body imports. Here, `npm ci` then `npm run check` and `npm test` type-check every body and run the
+tests. Licence: [MIT](LICENSE). Issues and changes: [evoke-build/evoke](https://github.com/evoke-build/evoke).
